@@ -1,0 +1,44 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int     @id @default(autoincrement())
+  name         String
+  email        String 
+  password     String 
+  Event        Event[]
+  Ticket       Ticket[]
+  @@map("users")
+}
+
+model Event {
+  id            Int       @id @default(autoincrement())
+  name          String
+  date          DateTime
+  price         Int
+  ticket_qty    Int
+  image         String
+  description   String
+  user_id       Int
+  Ticket        Ticket[]
+  User          User      @relation(fields: [user_id], references: [id])
+  @@map("events")
+}
+
+model Ticket {
+  id         Int     @id @default(autoincrement())
+  qty        Int
+  code       String
+  event_id   Int
+  Event      Event   @relation(fields: [event_id], references: [id])
+  user_id    Int
+  User       User    @relation(fields: [user_id], references: [id])
+  @@map("tickets")
+}
