@@ -23,7 +23,7 @@ export async function create(req: Request, res: Response) {
 
     const user = await userService.createUser(body); 
 
-    return res.status(httpStatus.OK).json(user);
+    return res.status(httpStatus.CREATED).json(user);
 }
 
 export async function update(req: Request, res: Response) {
