@@ -10,3 +10,7 @@ export const createEventSchema = joi.object<EventParams>({
     ticket_qty: joi.number().required(),
     image: joi.string().required(),
 })
+
+export const getEventSchema = joi.object<{ id: number }>({
+    id: joi.number().required()
+})
