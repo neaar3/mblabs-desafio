@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
 import Unauthorized from "../errors/Unauthorized";
 import InvalidData from "../errors/InvalidDataError";
+import NotFound from "../errors/NotFound";
 
 
 export default function errorHandling(
@@ -18,6 +19,12 @@ export default function errorHandling(
 
   if (err instanceof Unauthorized) {
     return res.status(httpStatus.UNAUTHORIZED).send({
+      message: err.message,
+    });
+  }
+
+  if (err instanceof NotFound) {
+    return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });
   }
