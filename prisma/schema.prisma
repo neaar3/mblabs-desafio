@@ -26,6 +26,7 @@ model Event {
   ticket_qty    Int
   image         String
   description   String
+  location      String
   user_id       Int
   Ticket        Ticket[]
   User          User      @relation(fields: [user_id], references: [id])
@@ -35,7 +36,7 @@ model Event {
 model Ticket {
   id         Int     @id @default(autoincrement())
   qty        Int
-  code       String
+  code       String  @unique
   event_id   Int
   Event      Event   @relation(fields: [event_id], references: [id])
   user_id    Int
