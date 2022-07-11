@@ -25,7 +25,7 @@ export async function findByNameAndDate (name: string, date: Date): Promise<Even
     });
 }
 
-export async function findById(id: number): Promise<Event> {
+export async function findById(id: number) {
     return prisma.event.findUnique({
         where: { id },
         include: {
@@ -39,14 +39,11 @@ export async function findById(id: number): Promise<Event> {
     });
 }
 
-export async function findAvailableEvents(): Promise<Event[]>  {
-    let date = new Date();
-    date.setDate(date.getDate() - 1);
-
+export async function findAvailableEvents(today: Date): Promise<Event[]>  {
     return prisma.event.findMany({
         where: {
             date: {
-                gte: date
+                gte: today
             },
             ticket_qty: {
                 gte: 1
@@ -54,4 +51,25 @@ export async function findAvailableEvents(): Promise<Event[]>  {
         }
     });
 }
+
+export async function destroy(id: number): Promise<void> {
+    return prisma.$transaction(async (prisma) => {
+        await prisma.ticket.deleteMany({
+            where: {
+                event_id: id
+            }
+        });
+        await prisma.event.delete({
+            where: { id }
+        });
+    });
+}
+
+export async function update(id: number, event: Omit<EventParams, "user_id">): Promise<Event> {
+    return prisma.event.update({
+        where: { id },
+        data: { ...event }
+    });
+}
+
 
