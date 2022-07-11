@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import Unauthorized from "../errors/Unauthorized";
 import InvalidData from "../errors/InvalidDataError";
 import NotFound from "../errors/NotFound";
+import Forbidden from "../errors/Forbidden";
 
 
 export default function errorHandling(
@@ -24,6 +25,12 @@ export default function errorHandling(
   }
 
   if (err instanceof NotFound) {
+    return res.status(httpStatus.NOT_FOUND).send({
+      message: err.message,
+    });
+  }
+
+  if (err instanceof Forbidden) {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });
