@@ -35,7 +35,6 @@ model Event {
 
 model Ticket {
   id         Int     @id @default(autoincrement())
-  qty        Int
   code       String  @unique
   event_id   Int
   Event      Event   @relation(fields: [event_id], references: [id])
