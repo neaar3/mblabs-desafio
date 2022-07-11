@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  mblabs-desafio:
+    container_name: mblabs-desafio
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - ./usr/src/app/node_modules
+      - ./usr/src/app/tmp
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    command: sh -c "npx prisma npm run dev"
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - mblabs-sql
+      - mailhog
+
+  mblabs-sql:
+    container_name: mblabs-sql
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - mblabs-sql-data:/var/lib/postgresql/data
+    command: postgres -p ${POSTGRES_PORT}
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - ${MAILHOG_PORT}:${MAILHOG_PORT}
+      - 8025:8025
+volumes:
+  mblabs-sql-data:
