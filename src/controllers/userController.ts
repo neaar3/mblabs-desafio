@@ -21,7 +21,7 @@ export async function findOne(req: Request, res: Response) {
 export async function create(req: Request, res: Response) {
     const body = req.body;
 
-    const user = await userService.createUser(body); 
+    const user = await userService.create(body); 
 
     return res.status(httpStatus.CREATED).json(user);
 }

@@ -12,13 +12,11 @@ export async function signIn(user: UserLogin) {
 
 	const userFound = await userRepository.findByEmail(email);
 	
-	if (!userFound) {
+	if (!userFound) 
 		throw new Unauthorized('Incorrect email or password')
-	}
 
-	if (!bcrypt.compareSync(password, userFound.password)) {
+	if (!bcrypt.compareSync(password, userFound.password)) 
 		throw new Unauthorized('Incorrect email or password')
-	}
 
 	const data = { userId: userFound.id }
 	const secret = process.env.JWT_SECRET
