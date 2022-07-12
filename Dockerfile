@@ -1,20 +1,24 @@
 FROM node:16.13-alpine As build
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY ./package*.json ./
 COPY ./tsconfig*.json ./
 COPY ./prisma ./prisma
+COPY .env ./
 RUN npm ci
+RUN npx prisma generate
 COPY . .
 RUN npm run build
-RUN npm ci --only=production && npm cache clean --force
+
 
 FROM node:16.13-alpine 
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY ./package*.json ./
 COPY ./tsconfig*.json ./
 COPY ./prisma ./prisma
-RUN npm ci --only=production && npm cache clean --force
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
+COPY .env ./
+RUN npm ci
+RUN npx prisma generate
 EXPOSE 8080
 CMD [ "node", "dist/server.js" ]

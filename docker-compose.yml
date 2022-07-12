@@ -1,26 +1,29 @@
-version: '3'
+version: '3.4'
 
 services:
   mblabs-desafio:
-    container_name: mblabs-desafio
     build:
       dockerfile: Dockerfile
       context: .
+    container_name: mblabs-desafio
     volumes:
-      - .:/usr/src/app
-      - ./usr/src/app/node_modules
-      - ./usr/src/app/tmp
+      - ./src:/app/src
+    command: npm run start
     env_file:
       - .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
-    command: sh -c "npx prisma npm run dev"
+      JWT_SECRET: ${JWT_SECRET}
+      MAILTRAP_USERNAME: ${MAILTRAP_USERNAME}
+      MAILTRAP_PASSWORD: ${MAILTRAP_PASSWORD}
+      MAILTRAP_HOST: ${MAILTRAP_HOST}
+      MAILTRAP_PORT: ${MAILTRAP_PORT}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      APP_URL: ${APP_URL}
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - mblabs-sql
-      - mailhog
-
   mblabs-sql:
     container_name: mblabs-sql
     image: postgres
@@ -30,16 +33,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - mblabs-sql-data:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    restart: always
-    ports:
-      - ${MAILHOG_PORT}:${MAILHOG_PORT}
-      - 8025:8025
 volumes:
   mblabs-sql-data:
