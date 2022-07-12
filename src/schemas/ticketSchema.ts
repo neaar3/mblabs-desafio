@@ -1,9 +1,9 @@
 import joi from 'joi'
-import { TicketPartial } from '../services/ticketService.js'
+import { TicketPartial } from '../types/ticketTypes'
 
 export const createTicketSchema = joi.object<TicketPartial>({
-	event_id: joi.number().required(),
     qty: joi.number().required(),
+	event_id: joi.number().required(),
 })
 
 export const getUserTicketSchema = joi.object<{ code: string }>({

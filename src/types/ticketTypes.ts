@@ -5,4 +5,6 @@ export type TicketParams = {
     code: string
 }
 
+export type TicketPartial = Omit<TicketParams, 'code'>;
+
 export type TicketCompact = Omit<TicketParams, 'event_id'|'user_id'|'qty'>;

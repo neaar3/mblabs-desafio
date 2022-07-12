@@ -9,6 +9,12 @@ const ticketRouter = Router()
 ticketRouter.post('/tickets', 
     validateBody(createTicketSchema), 
     authenticateToken, 
+    ticketController.payment
+)
+
+ticketRouter.post('/success/:qty/:event_id', 
+    validateParams(createTicketSchema), 
+    authenticateToken, 
     ticketController.create
 )
 
