@@ -12,9 +12,7 @@ ticketRouter.post('/tickets',
     ticketController.payment
 )
 
-ticketRouter.post('/success/:qty/:event_id', 
-    validateParams(createTicketSchema), 
-    authenticateToken, 
+ticketRouter.get('/order/success', 
     ticketController.create
 )
 

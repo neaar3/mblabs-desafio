@@ -38,6 +38,6 @@ export default function errorHandling(
 
   console.error(err);
   res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
-    message: "Error interno no servidor!",
+    message: "Internal server error!",
   });
 }

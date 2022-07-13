@@ -4,8 +4,9 @@ import * as ticketService from "../services/ticketService";
 
 export async function payment(req: Request, res: Response) {
     const body = req.body;
+    const { user } = res.locals;
 
-    const ticket = await ticketService.payment(body);
+    const ticket = await ticketService.payment({...body, user_id: user.userId});
 
     return res.status(httpStatus.OK).json({ 
         message: 'Use the link below to pay your ticket',
@@ -15,17 +16,15 @@ export async function payment(req: Request, res: Response) {
 
 
 export async function create(req: Request, res: Response) {
-    const { user } = res.locals;
-    const { qty, event_id } = req.params;
+    const { qty, event_id, user_id } = req.query;
 
-
-    const ticket = await ticketService.buy({
-        qty: parseInt(qty),
-        event_id: parseInt(event_id), 
-        user_id: user.userId
+    const tickets = await ticketService.buy({
+        qty: parseInt(qty as string),
+        event_id: parseInt(event_id as string), 
+        user_id: parseInt(user_id as string)
     });
 
-    return res.status(httpStatus.CREATED).json(ticket);
+    return res.status(httpStatus.CREATED).json(tickets);
 }
 
 

@@ -9,7 +9,7 @@ import NotFound from "../errors/NotFound";
 import InvalidData from "../errors/InvalidDataError";
 
 
-export async function payment(ticket: TicketPartial) {
+export async function payment(ticket: Partial<TicketPartial>) {
     const event = await eventRepository.findById(ticket.event_id);
 
     if (!event) 
@@ -24,7 +24,8 @@ export async function payment(ticket: TicketPartial) {
     return paymentService.createPaymentSession({
         name: event.name,
         price: event.price,
-        qty: ticket.qty
+        qty: ticket.qty,
+        userId: ticket.user_id,
     }, event.id);
 }
 

@@ -20,7 +20,7 @@ export async function createPaymentSession(lineItem: PaymentParams, eventId: num
             quantity: lineItem.qty,
         }
     ],
-        success_url: `${process.env.APP_URL}/success/${lineItem.qty}/${eventId}`,
+        success_url: `${process.env.APP_URL}/order/success?session_id={CHECKOUT_SESSION_ID}&qty=${lineItem.qty}&event_id=${eventId}&user_id=${lineItem.userId}`,
         cancel_url: `${process.env.APP_URL}/cancel`,
     });
 
