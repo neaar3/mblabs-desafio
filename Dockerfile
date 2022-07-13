@@ -20,6 +20,6 @@ COPY ./prisma ./prisma
 COPY .env ./
 RUN npm ci
 RUN npx prisma generate
-RUN npm run build
+COPY --from=build /usr/src/app/dist ./dist
 EXPOSE 8080
 CMD [ "node", "dist/server.js" ]
