@@ -21,7 +21,7 @@ services:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       APP_URL: ${APP_URL}
     ports:
-      - ${PORT}:${PORT}
+      - "8080:8080"
     depends_on:
       - mblabs-sql
   mblabs-sql:
@@ -33,7 +33,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - "5432:5433"
     volumes:
       - mblabs-sql-data:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
