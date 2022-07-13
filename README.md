@@ -177,6 +177,7 @@ Foram criadas imagens e containers dos serviços utilizando *Docker*, onde os me
     http
     GET /tickets/user
 ``
+
 ## Instalação
 
 Caso queira executar a aplicação localmente, siga os passos abaixo.
